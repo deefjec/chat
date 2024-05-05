@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Text Input Boxes</title>
+    <script src="script.js" defer></script>
+    <style>
+        #inputContainer {
+            display: flex;
+            flex-direction: column;
+            /* Align items vertically */
+            gap: 10px;
+            /* Add some space between boxes */
+        }
+    </style>
+    <style>
+        #systemArea {
+            display: flex;
+            flex-direction: column;
+            /* Align items vertically */
+            gap: 10px;
+            /* Add some space between boxes */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="systemArea">
+    </div>
+    <div id="inputContainer">
+        <!-- Text input boxes will be added here -->
+    </div>
+    <button id="printBtn">Fill Last Box</button>
+    <button id="addBtn">Add Box</button>
+    
+    <input type="radio" id="haiku" name="version" value="claude-3-haiku-20240307">
+    <label for="haiku">HAIKU</label>
+    <input type="radio" id="sonnet" name="version" value="claude-3-sonnet-20240229"><label for="sonnet">SONNET</label>
+    <input type="radio" id="opus" name="version" value="claude-3-opus-20240229">
+    <label for="opus">OPUS</label>
+
+</body>
+
+</html>
