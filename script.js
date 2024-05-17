@@ -81,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const inputContainer = document.getElementById("inputContainer");
     const printBtn = document.getElementById("printBtn");
     const addBtn = document.getElementById("addBtn");
+    const clearBtn = document.getElementById("clearBtn");
     const systemArea = document.getElementById("systemArea");
     const systemPrompt = document.createElement("textarea");
     systemPrompt.placeholder = "Enter systemPrompt";
@@ -105,6 +106,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     systemArea.appendChild(apikey);  
     var claudeReply = "";
+
+    if (localStorage.allContents){
+        ac = JSON.parse(localStorage.allContents);
+            for (i = 0; i < ac.length; i++){
+                addbox(i, ac[i]);
+            }
+    }
 
 
 
@@ -133,10 +141,28 @@ document.addEventListener("DOMContentLoaded", function () {
             lastInput.value = claudeReply;
             if (v?.done) {
                 lastInput.value = claudeReply.trim();
+                saveInputs();
                 return;
             }
             readStream(reader, lastInput);
         });
+    }
+
+
+    function addbox(index, val){
+        const userInput = document.createElement("textarea");
+        userInput.placeholder = "Enter text";
+        userInput.rows = index % 2 ? 15 : 5;
+        inputContainer.appendChild(userInput);
+        userInput.value = val;
+
+    }
+
+    function saveInputs(){
+        const inputs = document.querySelectorAll("#inputContainer textarea");
+
+        const allContents = Array.from(inputs).map(input => input.value);
+        localStorage.allContents = JSON.stringify(allContents);
     }
 
 
@@ -173,6 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         fetch(apiUrl, {
+
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -189,6 +216,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => {
                 lastInput.value = 'Error: ' + error.message;
             });
+
+
     }
 
 
@@ -196,6 +225,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     printBtn.addEventListener("click", fillLastBox);
+
+    clearBtn.addEventListener("click", function (){
+        const inputs = document.querySelectorAll("#inputContainer textarea");
+
+        const allContents = Array.from(inputs).map(input => input.value);
+        localStorage.allContents = JSON.stringify(allContents.slice(0,-2));
+        location.reload();
+
+    })
 
     addBtn.addEventListener("click", function () {
         const userInput = document.createElement("textarea");
