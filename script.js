@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
     saveBtn.addEventListener('click', () => {
         const inputs = document.querySelectorAll("#inputContainer textarea");
         const allContents = Array.from(inputs).map(input => input.value);      
-        downloadToFile(JSON.stringify(allContents), 'export.txt', 'text/plain');
+        downloadToFile(allContents.join("\n\n"), 'export.txt', 'text/plain');
     });
 
 
