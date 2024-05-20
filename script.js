@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const clearBtn = document.getElementById("clearBtn");
     const systemArea = document.getElementById("systemArea");
     const systemPrompt = document.createElement("textarea");
+    const saveBtn = document.getElementById("saveBtn");
     systemPrompt.placeholder = "Enter systemPrompt";
     systemPrompt.rows = "5"; // Adjust rows for multiline input
     if (localStorage.systemPrompt) {
@@ -220,7 +221,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
+    const downloadToFile = (content, filename, contentType) => {
+        const a = document.createElement('a');
+        const file = new Blob([content], { type: contentType });
+      
+        a.href = URL.createObjectURL(file);
+        a.download = filename;
+        a.click();
+      
+        URL.revokeObjectURL(a.href);
+      };
 
 
 
@@ -233,15 +243,25 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.allContents = JSON.stringify(allContents.slice(0,-2));
         location.reload();
 
-    })
+    });
+
+    saveBtn.addEventListener('click', () => {
+        const inputs = document.querySelectorAll("#inputContainer textarea");
+        const allContents = Array.from(inputs).map(input => input.value);      
+        downloadToFile(JSON.stringify(allContents), 'export.txt', 'text/plain');
+    });
+
+
+
 
     addBtn.addEventListener("click", function () {
         const userInput = document.createElement("textarea");
         userInput.placeholder = "Enter text";
         userInput.rows = "5";
         const output = document.createElement("textarea");
-        output.placeholder = "claude:" // Adjust rows for multiline input
-        output.rows = 10;
+        output.placeholder = "claude:"; 
+        // Adjust rows for multiline input
+        output.rows = 20;
 
         inputContainer.appendChild(userInput);
         inputContainer.appendChild(output);
